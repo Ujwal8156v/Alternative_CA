@@ -1,7 +1,11 @@
 /**
- * TaxEngine AY 2026-27 (FY 2025-26)
+ * TaxEngine AY 2026-27 (FY 2025-26) - Alternative_CA
  * Deterministic, mathematically verified Indian Income Tax calculation engine.
  * Fully compliant with Finance Act provisions for Assessment Year 2026-27.
+ * 
+ * Author: Ujwal Kumar Behera (@Ujwal8156v)
+ * Repository: https://github.com/Ujwal8156v/Alternative_CA
+ * Copyright (c) 2026 Alternative_CA
  */
 
 (function (root, factory) {

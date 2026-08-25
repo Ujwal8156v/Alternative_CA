@@ -1,5 +1,8 @@
 /**
- * TaxEase India - Web Application Controller (AY 2026-27)
+ * TaxEase India (Alternative CA) - Web Application Controller (AY 2026-27)
+ * Author: Ujwal Kumar Behera (@Ujwal8156v)
+ * Repository: https://github.com/Ujwal8156v/Alternative_CA
+ * Copyright (c) 2026 Alternative_CA
  */
 
 document.addEventListener('DOMContentLoaded', () => {
