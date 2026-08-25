@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TaxEase India - Indian Income Tax Filing Assistant & Calculator (AY 2026-27)</title>
+  <meta name="description" content="Privacy-first, deterministic Indian Income Tax filing assistant and calculator for AY 2026-27 (FY 2025-26). Form 16 & AIS parser, Old vs New regime comparison, ITR-1/ITR-2 schedule mapper."/>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link rel="icon" type="image/png" href="logo.png"/>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#000f22",
+            "primary-container": "#0a2540",
+            "primary-light": "#1a3b5c",
+            "secondary": "#006e0c",
+            "secondary-container": "#00d924",
+            "secondary-dark": "#005307",
+            "surface": "#f7fafd",
+            "surface-dim": "#d7dadd",
+            "surface-card": "#ffffff",
+            "surface-container": "#ebeef1",
+            "surface-container-low": "#f1f4f7",
+            "surface-container-high": "#e5e8eb",
+            "on-surface": "#181c1e",
+            "on-surface-variant": "#43474d",
+            "outline": "#74777e",
+            "outline-variant": "#c4c6ce",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+            "amber-badge": "#b45309",
+            "amber-container": "#fef3c7"
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          boxShadow: {
+            'card': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03)',
+            'floating': '0 10px 25px -5px rgba(10, 37, 64, 0.1), 0 8px 10px -6px rgba(10, 37, 64, 0.05)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .mono-num { font-feature-settings: "tnum"; font-variant-numeric: tabular-nums; }
+    .tab-active { border-bottom-color: #0a2540; color: #0a2540; font-weight: 600; }
+    .dark .tab-active { border-bottom-color: #768dad; color: #d2e4ff; }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f4f7; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #c4c6ce; border-radius: 3px; }
+  </style>
+</head>
+
+<body class="bg-surface text-on-surface min-h-screen flex flex-col antialiased">
+
+  <!-- Top Navigation Bar -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-outline-variant shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3">
+        <img src="logo.png" alt="TaxEase India Logo" class="w-11 h-11 rounded-xl object-cover shadow-sm border border-outline-variant/60"/>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-lg text-primary tracking-tight">TaxEase India</span>
+            <span class="px-2 py-0.5 text-xs font-semibold rounded bg-blue-100 text-blue-800 border border-blue-200">AY 2026-27</span>
+          </div>
+          <p class="text-xs text-on-surface-variant hidden sm:block">Automated, Privacy-Preserving ITR Preparation & Tax Engine · <span class="text-emerald-700 font-medium">बूंद-बूंद बचाओ</span></p>
+        </div>
+      </div>
+
+      <!-- Quick Action Badges -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Privacy Badge -->
+        <div class="hidden md:flex items-center gap-1.5 px-3 py-1 bg-emerald-50 border border-emerald-200 rounded-full text-xs font-medium text-emerald-800" title="All calculations and parsing are performed 100% locally in your browser. No financial data leaves your device.">
+          <span class="material-symbols-outlined text-sm text-emerald-600">lock</span>
+          <span>100% In-Browser Privacy</span>
+        </div>
+
+        <!-- Presets Dropdown Trigger -->
+        <button id="btnLoadPersonaModal" class="px-3 py-1.5 text-xs font-semibold bg-surface-container-high hover:bg-surface-variant text-primary rounded-lg border border-outline-variant transition flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm">groups</span>
+          <span class="hidden sm:inline">Load Persona</span>
+        </button>
+
+        <!-- Run Self Test -->
+        <button id="btnRunTestsNav" class="px-3 py-1.5 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition flex items-center gap-1.5 shadow-sm">
+          <span class="material-symbols-outlined text-sm">verified</span>
+          <span>Self-Test</span>
+        </button>
+
+        <!-- Clear / Reset -->
+        <button id="btnResetData" class="p-1.5 text-on-surface-variant hover:text-error hover:bg-red-50 rounded-lg transition" title="Clear all local data">
+          <span class="material-symbols-outlined text-lg">restart_alt</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Stepper Navigation -->
+    <nav class="bg-surface-container-low border-t border-outline-variant/60">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto custom-scrollbar">
+        <button class="step-nav-btn py-3 px-4 text-xs sm:text-sm font-medium border-b-2 whitespace-nowrap transition flex items-center gap-2 tab-active" data-step="1">
+          <span class="w-5 h-5 rounded-full bg-primary text-white text-xs flex items-center justify-center font-bold">1</span>
+          <span>Import & Setup</span>
+        </button>
+        <button class="step-nav-btn py-3 px-4 text-xs sm:text-sm font-medium border-b-2 border-transparent text-on-surface-variant hover:text-primary whitespace-nowrap transition flex items-center gap-2" data-step="2">
+          <span class="w-5 h-5 rounded-full bg-surface-container-highest text-on-surface text-xs flex items-center justify-center font-bold">2</span>
+          <span>Income & Deductions</span>
+        </button>
+        <button class="step-nav-btn py-3 px-4 text-xs sm:text-sm font-medium border-b-2 border-transparent text-on-surface-variant hover:text-primary whitespace-nowrap transition flex items-center gap-2" data-step="3">
+          <span class="w-5 h-5 rounded-full bg-surface-container-highest text-on-surface text-xs flex items-center justify-center font-bold">3</span>
+          <span>Tax & Regime Comparison</span>
+        </button>
+        <button class="step-nav-btn py-3 px-4 text-xs sm:text-sm font-medium border-b-2 border-transparent text-on-surface-variant hover:text-primary whitespace-nowrap transition flex items-center gap-2" data-step="4">
+          <span class="w-5 h-5 rounded-full bg-surface-container-highest text-on-surface text-xs flex items-center justify-center font-bold">4</span>
+          <span>ITR Portal Schedules</span>
+        </button>
+        <button class="step-nav-btn py-3 px-4 text-xs sm:text-sm font-medium border-b-2 border-transparent text-on-surface-variant hover:text-primary whitespace-nowrap transition flex items-center gap-2" data-step="5">
+          <span class="w-5 h-5 rounded-full bg-surface-container-highest text-on-surface text-xs flex items-center justify-center font-bold">5</span>
+          <span>Diagnostics & Tests</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- Global Fiscal Integrity Alert Banner (Appears dynamically if discrepancy or warning) -->
+    <div id="integrityBanner" class="hidden mb-6 p-4 rounded-xl border transition-all"></div>
+
+    <!-- ========================================================================= -->
+    <!-- STEP 1: IMPORT & SETUP -->
+    <!-- ========================================================================= -->
+    <section id="step1" class="step-content">
+      <div class="mb-8 text-center max-w-3xl mx-auto">
+        <h1 class="text-3xl font-extrabold text-primary tracking-tight">Simplify Your AY 2026-27 Income Tax Filing</h1>
+        <p class="mt-2 text-base text-on-surface-variant">
+          Upload your Form 16 and AIS to auto-fill income details, or start with one of our ready-to-test financial personas. All tax calculations stay completely on your machine.
+        </p>
+      </div>
+
+      <!-- Quick Personas Grid -->
+      <div class="mb-10">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold text-primary flex items-center gap-2">
+            <span class="material-symbols-outlined text-blue-600">bolt</span>
+            Quick Start Demo Personas
+          </h2>
+          <span class="text-xs text-on-surface-variant">Click any persona to load verified test data</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="personasContainer"></div>
+      </div>
+
+      <!-- Document Importer Cards -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        
+        <!-- Form 16 Upload Card -->
+        <div class="bg-white rounded-2xl border border-outline-variant p-6 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-blue-700 text-2xl">description</span>
+                <h3 class="font-bold text-base text-primary">Import Form 16 (Part A & B)</h3>
+              </div>
+              <span class="px-2 py-0.5 text-xs font-semibold rounded bg-blue-50 text-blue-700 border border-blue-200">Salary & TDS</span>
+            </div>
+            <p class="text-xs text-on-surface-variant mb-4">
+              Upload your employer-issued Form 16 (Text, JSON, or paste text) to automatically capture Gross Salary, Section 16 deductions, 80C/80D, and TDS deposited.
+            </p>
+
+            <!-- Dropzone -->
+            <div id="dropzoneF16" class="border-2 border-dashed border-outline-variant hover:border-primary/60 rounded-xl p-6 text-center cursor-pointer bg-surface-container-low hover:bg-surface-container transition">
+              <span class="material-symbols-outlined text-4xl text-outline mb-2">upload_file</span>
+              <p class="text-xs font-semibold text-primary">Click to select or drag & drop Form 16</p>
+              <p class="text-[11px] text-on-surface-variant mt-1">Supports JSON, TXT, or pasted raw text</p>
+              <input type="file" id="fileInputF16" class="hidden" accept=".json,.txt,.pdf"/>
+            </div>
+
+            <!-- Paste text fallback toggle -->
+            <div class="mt-3 flex justify-between items-center text-xs">
+              <button id="btnTogglePasteF16" class="text-blue-600 hover:underline flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs">edit_note</span> Paste Form 16 Text
+              </button>
+              <button id="btnSampleF16" class="text-emerald-700 font-medium hover:underline flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs">auto_fix_high</span> Load Mock Form 16
+              </button>
+            </div>
+
+            <!-- Paste Box Area -->
+            <div id="pasteAreaF16" class="hidden mt-3">
+              <textarea id="txtPasteF16" rows="4" class="w-full text-xs font-mono p-2.5 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary" placeholder="Paste Form 16 certificate text or JSON here..."></textarea>
+              <button id="btnParsePasteF16" class="mt-2 w-full py-1.5 bg-primary text-white text-xs font-semibold rounded-lg hover:bg-primary-light transition">Parse Pasted Form 16</button>
+            </div>
+          </div>
+
+          <!-- Form 16 Parsed Status -->
+          <div id="statusF16" class="mt-4 pt-3 border-t border-outline-variant/60 text-xs text-on-surface-variant flex items-center justify-between">
+            <span class="text-xs text-on-surface-variant flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-slate-300 inline-block" id="dotF16"></span>
+              <span id="labelF16Status">No Form 16 loaded</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- AIS Upload Card -->
+        <div class="bg-white rounded-2xl border border-outline-variant p-6 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-indigo-700 text-2xl">table_chart</span>
+                <h3 class="font-bold text-base text-primary">Import AIS / 26AS</h3>
+              </div>
+              <span class="px-2 py-0.5 text-xs font-semibold rounded bg-indigo-50 text-indigo-700 border border-indigo-200">All Incomes & Credits</span>
+            </div>
+            <p class="text-xs text-on-surface-variant mb-4">
+              Upload your Annual Information Statement (AIS JSON/Text) from the Income Tax portal to pull Bank Interest, Dividends, Capital Gains, and 26AS TDS credits.
+            </p>
+
+            <!-- Dropzone -->
+            <div id="dropzoneAIS" class="border-2 border-dashed border-outline-variant hover:border-primary/60 rounded-xl p-6 text-center cursor-pointer bg-surface-container-low hover:bg-surface-container transition">
+              <span class="material-symbols-outlined text-4xl text-outline mb-2">cloud_download</span>
+              <p class="text-xs font-semibold text-primary">Click to select or drag & drop AIS JSON</p>
+              <p class="text-[11px] text-on-surface-variant mt-1">Direct JSON export from Income Tax e-filing portal</p>
+              <input type="file" id="fileInputAIS" class="hidden" accept=".json,.txt"/>
+            </div>
+
+            <!-- Paste text fallback toggle -->
+            <div class="mt-3 flex justify-between items-center text-xs">
+              <button id="btnTogglePasteAIS" class="text-indigo-600 hover:underline flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs">edit_note</span> Paste AIS JSON/Text
+              </button>
+              <button id="btnSampleAIS" class="text-emerald-700 font-medium hover:underline flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs">auto_fix_high</span> Load Mock AIS JSON
+              </button>
+            </div>
+
+            <!-- Paste Box Area -->
+            <div id="pasteAreaAIS" class="hidden mt-3">
+              <textarea id="txtPasteAIS" rows="4" class="w-full text-xs font-mono p-2.5 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary" placeholder='Paste AIS JSON object (e.g. {"details": [...]}) here...'></textarea>
+              <button id="btnParsePasteAIS" class="mt-2 w-full py-1.5 bg-indigo-900 text-white text-xs font-semibold rounded-lg hover:bg-indigo-800 transition">Parse Pasted AIS</button>
+            </div>
+          </div>
+
+          <!-- AIS Parsed Status -->
+          <div id="statusAIS" class="mt-4 pt-3 border-t border-outline-variant/60 text-xs text-on-surface-variant flex items-center justify-between">
+            <span class="text-xs text-on-surface-variant flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-slate-300 inline-block" id="dotAIS"></span>
+              <span id="labelAISStatus">No AIS loaded</span>
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Action Navigation -->
+      <div class="flex items-center justify-between pt-4 border-t border-outline-variant">
+        <button id="btnQuickSalariedDemo" class="text-xs font-semibold text-primary hover:underline flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm">play_circle</span> Try Standard Salaried ₹12.5L Zero-Tax Demo
+        </button>
+        <button class="btnNextStep px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-light transition flex items-center gap-2 shadow-md" data-target="2">
+          <span>Continue to Income Profile</span>
+          <span class="material-symbols-outlined text-base">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- STEP 2: INCOME & DEDUCTIONS PROFILE -->
+    <!-- ========================================================================= -->
+    <section id="step2" class="step-content hidden">
+      <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-bold text-primary">Review & Refine Your Income Profile</h2>
+          <p class="text-xs text-on-surface-variant mt-1">
+            Data extracted from Form 16 and AIS has been pre-filled. Adjust any numbers or answer missing questions below.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 bg-blue-50 text-blue-900 border border-blue-200 rounded-lg text-xs font-semibold flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">calculate</span>
+            <span id="headerQuickTax">Live Tax: Calculating...</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Form Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Left 2 Cols: Form Sections -->
+        <div class="lg:col-span-2 space-y-6">
+
+          <!-- Section A: Basic & Demographic Details -->
+          <div class="bg-white rounded-2xl border border-outline-variant p-5 shadow-sm">
+            <h3 class="text-sm font-bold text-primary uppercase tracking-wider mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-blue-600 text-lg">badge</span>
+              1. Taxpayer Information & Filing Timelines
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Permanent Account Number (PAN)</label>
+                <input type="text" id="inpPAN" maxlength="10" placeholder="ABCDE1234F" class="w-full text-xs font-mono uppercase p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary"/>
+                <span id="errPAN" class="text-[11px] text-error hidden mt-0.5">Invalid PAN format</span>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Age Category (AY 2026-27)</label>
+                <select id="inpAgeCategory" class="w-full text-xs p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary">
+                  <option value="GENERAL">Individual (&lt; 60 years)</option>
+                  <option value="SENIOR">Senior Citizen (60 - 79 years)</option>
+                  <option value="SUPER_SENIOR">Super Senior Citizen (80+ years)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Return Filing Month</label>
+                <select id="inpFilingMonth" class="w-full text-xs p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary">
+                  <option value="7">July 2026 (On or before Due Date)</option>
+                  <option value="8">August 2026 (Delayed - Sec 234A/F applies)</option>
+                  <option value="10">October 2026 (Late)</option>
+                  <option value="12">December 2026 (Belated Return)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section B: Income from Salary (Head 1) -->
+          <div class="bg-white rounded-2xl border border-outline-variant p-5 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-sm font-bold text-primary uppercase tracking-wider flex items-center gap-2">
+                <span class="material-symbols-outlined text-blue-600 text-lg">work</span>
+                2. Income from Salary (Section 17)
+              </h3>
+              <span class="text-xs text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-medium">Std Ded: ₹75,000 (New) / ₹50,000 (Old)</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Gross Salary (Sec 17(1) + 17(2) + 17(3))</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpGrossSalary" min="0" step="1000" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num font-medium"/>
+                </div>
+                <span class="text-[11px] text-on-surface-variant">Includes Basic, HRA, Allowances, Bonuses, and Perquisites</span>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Professional Tax Paid (Sec 16(iii))</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpProfessionalTax" min="0" max="2500" placeholder="2500" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+                <span class="text-[11px] text-on-surface-variant">Max ₹2,500/year (Deductible under Old Regime only)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section C: House Property (Head 2) -->
+          <div class="bg-white rounded-2xl border border-outline-variant p-5 shadow-sm">
+            <h3 class="text-sm font-bold text-primary uppercase tracking-wider mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-blue-600 text-lg">home</span>
+              3. House Property Income / Home Loan Loss (Section 24)
+            </h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-3">
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Property Type</label>
+                <select id="inpPropertyType" class="w-full text-xs p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary">
+                  <option value="SELF_OCCUPIED">Self-Occupied</option>
+                  <option value="LET_OUT">Let Out (Rental)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Home Loan Interest (Sec 24(b))</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpHomeLoanInterest" min="0" step="1000" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+                <span class="text-[11px] text-on-surface-variant">Max ₹2L deduction under Old Regime</span>
+              </div>
+
+              <div id="containerLetOutRent" class="hidden">
+                <label class="block text-xs font-semibold text-on-surface mb-1">Annual Rent Received</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpRentReceived" min="0" step="1000" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section D: Capital Gains (Head 3) -->
+          <div class="bg-white rounded-2xl border border-outline-variant p-5 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-sm font-bold text-primary uppercase tracking-wider flex items-center gap-2">
+                <span class="material-symbols-outlined text-blue-600 text-lg">trending_up</span>
+                4. Capital Gains (Budget 2025 Revised Rates)
+              </h3>
+              <span class="text-xs text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200 font-medium">112A @ 12.5% | 111A @ 20%</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">LTCG on Listed Shares/MFs (Sec 112A)</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpLtcg112a" min="0" step="1000" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+                <span class="text-[11px] text-on-surface-variant">₹1,25,000 is tax-exempt. Balance taxed @ 12.5%</span>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">STCG on Listed Shares/MFs (Sec 111A)</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpStcg111a" min="0" step="1000" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+                <span class="text-[11px] text-on-surface-variant">Taxed at flat 20% under both regimes</span>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Other LTCG (Real Estate, Gold, Unlisted)</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpOtherLtcg" min="0" step="1000" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+                <span class="text-[11px] text-on-surface-variant">Taxed @ 12.5%</span>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Other STCG (Debt MFs, Short-Term Property)</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpOtherStcg" min="0" step="1000" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+                <span class="text-[11px] text-on-surface-variant">Taxed at normal slab rates</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section E: Income from Other Sources (Head 4) -->
+          <div class="bg-white rounded-2xl border border-outline-variant p-5 shadow-sm">
+            <h3 class="text-sm font-bold text-primary uppercase tracking-wider mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-blue-600 text-lg">savings</span>
+              5. Income from Other Sources (Bank Interest & Dividends)
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Savings Bank Interest</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpSavingsInterest" min="0" step="500" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+                <span class="text-[11px] text-on-surface-variant">Eligible for 80TTA (up to ₹10k)</span>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Fixed Deposit / Time Deposit Interest</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpFdInterest" min="0" step="500" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+                <span class="text-[11px] text-on-surface-variant">Taxable at slab rates</span>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Dividend Income</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpDividendIncome" min="0" step="500" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+                <span class="text-[11px] text-on-surface-variant">From Indian companies & MFs</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section F: Chapter VI-A Deductions (Guided Tax Savers) -->
+          <div class="bg-white rounded-2xl border border-outline-variant p-5 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-sm font-bold text-primary uppercase tracking-wider flex items-center gap-2">
+                <span class="material-symbols-outlined text-blue-600 text-lg">verified_user</span>
+                6. Deductions under Chapter VI-A (Old Regime Savers)
+              </h3>
+              <span class="text-xs text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 font-medium">80CCD(2) allowed in New Regime</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-3">
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Section 80C (PPF, EPF, ELSS, Life Ins, Tuition)</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpSec80C" min="0" max="150000" step="1000" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+                <span class="text-[11px] text-on-surface-variant">Statutory limit: ₹1,50,000</span>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Section 80CCD(1B) (NPS Self Contribution)</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpSec80CCD1B" min="0" max="50000" step="1000" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+                <span class="text-[11px] text-on-surface-variant">Additional ₹50,000 deduction</span>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Section 80CCD(2) (Employer NPS Contribution)</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpSec80CCD2" min="0" step="1000" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+                <span class="text-[11px] text-emerald-700 font-medium">Allowed in BOTH Old and New Regimes!</span>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Section 80D (Health Insurance - Self & Family)</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpHealthSelf" min="0" max="50000" step="1000" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+                <span class="text-[11px] text-on-surface-variant">Max ₹25,000 (₹50k for Senior Citizen)</span>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Section 80D (Health Insurance - Parents)</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpHealthParents" min="0" max="50000" step="1000" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+                <div class="mt-1 flex items-center gap-2">
+                  <input type="checkbox" id="chkSeniorParents" class="rounded text-primary focus:ring-primary text-xs"/>
+                  <label for="chkSeniorParents" class="text-[11px] text-on-surface">Parents are Senior Citizens (&gt;60 yrs, limit ₹50k)</label>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">HRA Exemption / 80GG (House Rent Allowance)</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpHraExemption" min="0" step="1000" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+                <span class="text-[11px] text-on-surface-variant">Exemption calculated under Section 10(13A)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section G: Taxes Paid & Advance Tax -->
+          <div class="bg-white rounded-2xl border border-outline-variant p-5 shadow-sm">
+            <h3 class="text-sm font-bold text-primary uppercase tracking-wider mb-4 flex items-center gap-2">
+              <span class="material-symbols-outlined text-blue-600 text-lg">receipt_long</span>
+              7. Taxes Paid (TDS, TCS & Advance Tax)
+            </h3>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">TDS Deducted on Salary (Form 16)</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpTdsSalary" min="0" step="1000" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Other TDS / TCS (Bank/Dividend 26AS)</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpTdsOther" min="0" step="500" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-on-surface mb-1">Advance Tax / Self-Assessment Paid</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-2 text-xs text-outline font-bold">₹</span>
+                  <input type="number" id="inpAdvanceTax" min="0" step="1000" placeholder="0" class="w-full text-xs pl-7 p-2 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary mono-num"/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right 1 Col: Live Fiscal Integrity Summary Card -->
+        <div class="space-y-6">
+          <div class="bg-white rounded-2xl border border-outline-variant p-5 shadow-sm sticky top-28">
+            <h3 class="text-sm font-bold text-primary mb-3 flex items-center justify-between">
+              <span>Computation Summary</span>
+              <span id="badgeLiveRegime" class="px-2 py-0.5 text-xs font-bold rounded bg-emerald-100 text-emerald-800">NEW REGIME CHEAPER</span>
+            </h3>
+
+            <div class="space-y-2.5 text-xs border-b border-outline-variant pb-4 mb-4">
+              <div class="flex justify-between">
+                <span class="text-on-surface-variant">Gross Total Income:</span>
+                <span id="quickGrossIncome" class="font-semibold mono-num">₹0</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-on-surface-variant">Deductions (New / Old):</span>
+                <span id="quickDeductions" class="font-semibold mono-num">₹75,000 / ₹50,000</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-on-surface-variant">Taxable Income (New):</span>
+                <span id="quickTaxableNew" class="font-semibold mono-num">₹0</span>
+              </div>
+              <div class="flex justify-between text-blue-700 font-medium">
+                <span>Tax in New Regime:</span>
+                <span id="quickTaxNew" class="mono-num font-bold">₹0</span>
+              </div>
+              <div class="flex justify-between text-slate-700">
+                <span>Tax in Old Regime:</span>
+                <span id="quickTaxOld" class="mono-num font-medium">₹0</span>
+              </div>
+              <div class="flex justify-between text-emerald-700 font-bold pt-1 border-t border-dashed">
+                <span>Estimated Savings:</span>
+                <span id="quickSavings" class="mono-num">₹0</span>
+              </div>
+            </div>
+
+            <!-- Integrity Check List -->
+            <div>
+              <h4 class="text-xs font-bold text-primary mb-2 flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm text-emerald-600">verified</span>
+                Fiscal Integrity Checklist
+              </h4>
+              <div id="quickIntegrityList" class="space-y-1.5 text-[11px] text-on-surface-variant"></div>
+            </div>
+
+            <button class="btnNextStep mt-5 w-full py-2.5 bg-primary text-white text-xs font-semibold rounded-xl hover:bg-primary-light transition flex items-center justify-center gap-1 shadow" data-target="3">
+              <span>View Detailed Tax Calculation</span>
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Action Navigation -->
+      <div class="flex items-center justify-between pt-6 mt-6 border-t border-outline-variant">
+        <button class="btnPrevStep px-4 py-2 border border-outline-variant text-primary text-xs font-semibold rounded-xl hover:bg-surface-container transition flex items-center gap-1" data-target="1">
+          <span class="material-symbols-outlined text-sm">arrow_back</span>
+          <span>Back to Importer</span>
+        </button>
+        <button class="btnNextStep px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-light transition flex items-center gap-2 shadow-md" data-target="3">
+          <span>Compare Regimes & View Math</span>
+          <span class="material-symbols-outlined text-base">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- STEP 3: TAX & REGIME COMPARISON (THE DETERMINISTIC ENGINE) -->
+    <!-- ========================================================================= -->
+    <section id="step3" class="step-content hidden">
+      
+      <!-- Big Recommendation Banner -->
+      <div id="regimeRecommendationCard" class="mb-8 p-6 rounded-2xl shadow-md border transition-all"></div>
+
+      <!-- Break-Even Deduction Box -->
+      <div id="breakEvenCard" class="mb-8 p-5 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4"></div>
+
+      <!-- Side-by-Side Comparison Tables -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+
+        <!-- New Tax Regime (Section 115BAC) Card -->
+        <div class="bg-white rounded-2xl border-2 border-emerald-500/80 p-6 shadow-md relative overflow-hidden">
+          <div class="absolute top-0 right-0 bg-emerald-600 text-white text-[11px] font-bold px-3 py-1 rounded-bl-lg">
+            DEFAULT REGIME (AY 2026-27)
+          </div>
+
+          <div class="mb-4">
+            <h3 class="text-lg font-extrabold text-primary flex items-center gap-2">
+              <span>New Tax Regime</span>
+              <span class="text-xs px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-semibold">Sec 115BAC</span>
+            </h3>
+            <p class="text-xs text-on-surface-variant">Slabs: ₹0-4L (0%), 4-8L (5%), 8-12L (10%), 12-16L (15%), 16-20L (20%), 20-24L (25%), &gt;24L (30%)</p>
+          </div>
+
+          <!-- Line Items Breakdown -->
+          <div class="space-y-2 text-xs mono-num border-y border-outline-variant py-4 my-4">
+            <div class="flex justify-between">
+              <span class="text-on-surface-variant">Gross Total Income:</span>
+              <span id="nrGrossIncome" class="font-semibold text-on-surface">₹0</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-on-surface-variant">Less: Standard Deduction:</span>
+              <span class="font-semibold text-emerald-700">-₹75,000</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-on-surface-variant">Less: Employer NPS 80CCD(2):</span>
+              <span id="nr80ccd2" class="font-semibold text-emerald-700">-₹0</span>
+            </div>
+            <div class="flex justify-between font-bold text-primary pt-1 border-t">
+              <span>Net Taxable Income:</span>
+              <span id="nrTaxableIncome" class="text-sm">₹0</span>
+            </div>
+            
+            <!-- Slabs Detail Accordion -->
+            <div class="bg-surface-container-low p-3 rounded-lg my-2 space-y-1 text-[11px]" id="nrSlabDetails"></div>
+
+            <div class="flex justify-between">
+              <span class="text-on-surface-variant">Basic Slab Tax:</span>
+              <span id="nrBaseSlabTax">₹0</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-on-surface-variant">Special Rate Tax (LTCG 12.5% + STCG 20%):</span>
+              <span id="nrSpecialTax">₹0</span>
+            </div>
+            <div class="flex justify-between text-emerald-700 font-semibold">
+              <span>Less: Section 87A Rebate (up to ₹60,000):</span>
+              <span id="nrRebate87A">-₹0</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-on-surface-variant">Add: Surcharge (Marginal Relief applied):</span>
+              <span id="nrSurcharge">₹0</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-on-surface-variant">Add: Health & Education Cess (4%):</span>
+              <span id="nrCess">₹0</span>
+            </div>
+            <div class="flex justify-between font-bold text-on-surface pt-1 border-t">
+              <span>Total Assessed Tax:</span>
+              <span id="nrAssessedTax" class="text-sm">₹0</span>
+            </div>
+            <div class="flex justify-between text-amber-800">
+              <span>Add: Interest (234A/B/C) & Late Fee (234F):</span>
+              <span id="nrInterestFees">₹0</span>
+            </div>
+            <div class="flex justify-between text-on-surface-variant">
+              <span>Less: Total Taxes Paid (TDS/TCS/Adv Tax):</span>
+              <span id="nrTaxesPaid">-₹0</span>
+            </div>
+          </div>
+
+          <!-- Bottom Net Payable / Refund Highlight -->
+          <div id="nrFinalResultBox" class="p-4 rounded-xl text-center"></div>
+        </div>
+
+        <!-- Old Tax Regime Card -->
+        <div class="bg-white rounded-2xl border border-outline-variant p-6 shadow-sm relative overflow-hidden">
+          <div class="mb-4">
+            <h3 class="text-lg font-extrabold text-primary flex items-center gap-2">
+              <span>Old Tax Regime</span>
+              <span class="text-xs px-2 py-0.5 bg-slate-100 text-slate-800 rounded font-semibold">Optional</span>
+            </h3>
+            <p class="text-xs text-on-surface-variant">Slabs: ₹0-2.5L (0%), 2.5-5L (5%), 5-10L (20%), &gt;10L (30%) + Full Chapter VI-A</p>
+          </div>
+
+          <!-- Line Items Breakdown -->
+          <div class="space-y-2 text-xs mono-num border-y border-outline-variant py-4 my-4">
+            <div class="flex justify-between">
+              <span class="text-on-surface-variant">Gross Total Income:</span>
+              <span id="orGrossIncome" class="font-semibold text-on-surface">₹0</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-on-surface-variant">Less: Standard Deduction:</span>
+              <span class="font-semibold text-slate-700">-₹50,000</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-on-surface-variant">Less: House Property Loss (Sec 24b):</span>
+              <span id="orSec24b" class="font-semibold text-slate-700">-₹0</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-on-surface-variant">Less: Chapter VI-A (80C, 80D, 80CCD, etc.):</span>
+              <span id="orChapterVia" class="font-semibold text-slate-700">-₹0</span>
+            </div>
+            <div class="flex justify-between font-bold text-primary pt-1 border-t">
+              <span>Net Taxable Income:</span>
+              <span id="orTaxableIncome" class="text-sm">₹0</span>
+            </div>
+            
+            <!-- Slabs Detail Accordion -->
+            <div class="bg-surface-container-low p-3 rounded-lg my-2 space-y-1 text-[11px]" id="orSlabDetails"></div>
+
+            <div class="flex justify-between">
+              <span class="text-on-surface-variant">Basic Slab Tax:</span>
+              <span id="orBaseSlabTax">₹0</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-on-surface-variant">Special Rate Tax (LTCG 12.5% + STCG 20%):</span>
+              <span id="orSpecialTax">₹0</span>
+            </div>
+            <div class="flex justify-between text-emerald-700 font-semibold">
+              <span>Less: Section 87A Rebate (up to ₹12,500):</span>
+              <span id="orRebate87A">-₹0</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-on-surface-variant">Add: Surcharge (Marginal Relief applied):</span>
+              <span id="orSurcharge">₹0</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-on-surface-variant">Add: Health & Education Cess (4%):</span>
+              <span id="orCess">₹0</span>
+            </div>
+            <div class="flex justify-between font-bold text-on-surface pt-1 border-t">
+              <span>Total Assessed Tax:</span>
+              <span id="orAssessedTax" class="text-sm">₹0</span>
+            </div>
+            <div class="flex justify-between text-amber-800">
+              <span>Add: Interest (234A/B/C) & Late Fee (234F):</span>
+              <span id="orInterestFees">₹0</span>
+            </div>
+            <div class="flex justify-between text-on-surface-variant">
+              <span>Less: Total Taxes Paid (TDS/TCS/Adv Tax):</span>
+              <span id="orTaxesPaid">-₹0</span>
+            </div>
+          </div>
+
+          <!-- Bottom Net Payable / Refund Highlight -->
+          <div id="orFinalResultBox" class="p-4 rounded-xl text-center"></div>
+        </div>
+
+      </div>
+
+      <!-- Action Navigation -->
+      <div class="flex items-center justify-between pt-6 border-t border-outline-variant">
+        <button class="btnPrevStep px-4 py-2 border border-outline-variant text-primary text-xs font-semibold rounded-xl hover:bg-surface-container transition flex items-center gap-1" data-target="2">
+          <span class="material-symbols-outlined text-sm">arrow_back</span>
+          <span>Edit Income Profile</span>
+        </button>
+        <button class="btnNextStep px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-light transition flex items-center gap-2 shadow-md" data-target="4">
+          <span>Generate ITR Portal Schedules</span>
+          <span class="material-symbols-outlined text-base">arrow_forward</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- STEP 4: ITR PORTAL SCHEDULES & STEP-BY-STEP FILING GUIDE -->
+    <!-- ========================================================================= -->
+    <section id="step4" class="step-content hidden">
+      <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2">
+            <h2 class="text-2xl font-bold text-primary">ITR Filing Schedule Mapper & Guide</h2>
+            <span id="badgeItrForm" class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-blue-100 text-blue-900 border border-blue-200">ITR-1 (Sahaj)</span>
+          </div>
+          <p class="text-xs text-on-surface-variant mt-1">
+            Exact field-by-field figures ready to enter on <a href="https://eportal.incometax.gov.in" target="_blank" class="text-blue-600 underline">incometax.gov.in</a>. Click any <strong>Copy</strong> button to grab values instantly.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button id="btnExportJson" class="px-3 py-1.5 text-xs font-semibold bg-white border border-outline-variant text-primary hover:bg-surface-container rounded-lg transition flex items-center gap-1.5 shadow-sm">
+            <span class="material-symbols-outlined text-sm">download</span>
+            <span>Export Filing JSON</span>
+          </button>
+          <button id="btnPrintSummary" class="px-3 py-1.5 text-xs font-semibold bg-primary text-white hover:bg-primary-light rounded-lg transition flex items-center gap-1.5 shadow-sm">
+            <span class="material-symbols-outlined text-sm">print</span>
+            <span>Print Summary</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step-by-Step E-Filing Process Accordion -->
+      <div class="mb-8 bg-white rounded-2xl border border-outline-variant p-5 shadow-sm">
+        <h3 class="text-sm font-bold text-primary uppercase tracking-wider mb-3 flex items-center gap-2">
+          <span class="material-symbols-outlined text-blue-600">checklist</span>
+          Official E-Filing Portal Step-by-Step Checklist (AY 2026-27)
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3" id="filingStepsContainer"></div>
+      </div>
+
+      <!-- Schedules Grid -->
+      <div class="space-y-6" id="schedulesContainer"></div>
+
+      <!-- Action Navigation -->
+      <div class="flex items-center justify-between pt-6 mt-8 border-t border-outline-variant">
+        <button class="btnPrevStep px-4 py-2 border border-outline-variant text-primary text-xs font-semibold rounded-xl hover:bg-surface-container transition flex items-center gap-1" data-target="3">
+          <span class="material-symbols-outlined text-sm">arrow_back</span>
+          <span>Back to Calculation</span>
+        </button>
+        <button class="btnNextStep px-6 py-2.5 bg-emerald-700 text-white text-sm font-semibold rounded-xl hover:bg-emerald-800 transition flex items-center gap-2 shadow-md" data-target="5">
+          <span>Run Verification & Diagnostics</span>
+          <span class="material-symbols-outlined text-base">verified</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- STEP 5: DIAGNOSTICS & AUTOMATED SELF-TEST SUITE -->
+    <!-- ========================================================================= -->
+    <section id="step5" class="step-content hidden">
+      <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-bold text-primary">Automated Self-Test & Diagnostic Engine</h2>
+          <p class="text-xs text-on-surface-variant mt-1">
+            Execute all 10 deterministic test cases in-browser to verify mathematical correctness, marginal relief, capital gains rules, and statutory formulas for AY 2026-27.
+          </p>
+        </div>
+
+        <button id="btnRunAllTestsUI" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-2 shadow-md">
+          <span class="material-symbols-outlined text-base">play_arrow</span>
+          <span>Run Deterministic Tests Now</span>
+        </button>
+      </div>
+
+      <!-- Scoreboard -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div class="bg-white rounded-xl border border-outline-variant p-4 text-center">
+          <span class="text-xs text-on-surface-variant">Total Deterministic Tests</span>
+          <p id="statTotalTests" class="text-2xl font-bold text-primary mt-1">10</p>
+        </div>
+        <div class="bg-white rounded-xl border border-outline-variant p-4 text-center">
+          <span class="text-xs text-emerald-700">Passed Tests</span>
+          <p id="statPassedTests" class="text-2xl font-bold text-emerald-600 mt-1">0</p>
+        </div>
+        <div class="bg-white rounded-xl border border-outline-variant p-4 text-center">
+          <span class="text-xs text-error">Failed Tests</span>
+          <p id="statFailedTests" class="text-2xl font-bold text-error mt-1">0</p>
+        </div>
+      </div>
+
+      <!-- Test Cases List -->
+      <div class="bg-white rounded-2xl border border-outline-variant p-5 shadow-sm">
+        <div class="flex items-center justify-between pb-3 border-b border-outline-variant mb-4">
+          <h3 class="text-sm font-bold text-primary">Test Case Executions & Mathematical Assertions</h3>
+          <span id="testSuiteExecutionTime" class="text-xs font-mono text-on-surface-variant">Runtime: -- ms</span>
+        </div>
+
+        <div class="space-y-3" id="testResultsContainer"></div>
+      </div>
+
+      <!-- Action Navigation -->
+      <div class="flex items-center justify-between pt-6 mt-8 border-t border-outline-variant">
+        <button class="btnPrevStep px-4 py-2 border border-outline-variant text-primary text-xs font-semibold rounded-xl hover:bg-surface-container transition flex items-center gap-1" data-target="4">
+          <span class="material-symbols-outlined text-sm">arrow_back</span>
+          <span>Back to Schedules</span>
+        </button>
+        <button class="btnNextStep px-6 py-2.5 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-light transition flex items-center gap-2 shadow-md" data-target="1">
+          <span class="material-symbols-outlined text-base">home</span>
+          <span>Return to Dashboard</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Load Persona Modal -->
+  <div id="modalPersona" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-floating border border-outline-variant max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b border-outline-variant mb-4">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-blue-600">groups</span>
+          <h3 class="font-bold text-base text-primary">Select Pre-configured Persona</h3>
+        </div>
+        <button id="btnClosePersonaModal" class="p-1 rounded-lg text-on-surface-variant hover:bg-surface-container">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="space-y-3" id="modalPersonasList"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-outline-variant mt-12 py-6 text-xs text-on-surface-variant">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5">
+        <img src="logo.png" alt="Logo" class="w-6 h-6 rounded-md object-cover border border-outline-variant/60"/>
+        <span class="font-bold text-primary">TaxEase India (AY 2026-27)</span>
+        <span>·</span>
+        <span>Deterministic Indian Income Tax Engine & Filing Assistant · बूंद-बूंद बचाओ</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="flex items-center gap-1 text-emerald-700"><span class="material-symbols-outlined text-xs">lock</span> 100% Local Engine</span>
+        <span>·</span>
+        <span>Compliant with Budget 2025 / Finance Act</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification -->
+  <div id="toastNotification" class="fixed bottom-6 right-6 z-50 bg-primary-container text-white px-4 py-2.5 rounded-xl shadow-floating text-xs font-medium transform translate-y-20 opacity-0 transition-all flex items-center gap-2">
+    <span class="material-symbols-outlined text-sm text-emerald-400">check_circle</span>
+    <span id="toastMessage">Copied to clipboard!</span>
+  </div>
+
+  <!-- Scripts -->
+  <script src="src/taxEngine.js"></script>
+  <script src="src/validators.js"></script>
+  <script src="src/parsers.js"></script>
+  <script src="src/filingGuide.js"></script>
+  <script src="src/presets.js"></script>
+  <script src="src/testSuite.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

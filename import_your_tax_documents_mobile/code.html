@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>TaxGuard - Data Import</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e0e3e6",
+                        "tertiary-container": "#381d00",
+                        "surface": "#f7fafd",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#b0c8eb",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#eef1f4",
+                        "surface-bright": "#f7fafd",
+                        "primary-container": "#0a2540",
+                        "inverse-surface": "#2d3133",
+                        "tertiary-fixed": "#ffdcbe",
+                        "secondary": "#006e0c",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#000f22",
+                        "on-background": "#181c1e",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e0e3e6",
+                        "surface-tint": "#49607e",
+                        "on-primary-container": "#768dad",
+                        "on-tertiary-container": "#ae835a",
+                        "error": "#ba1a1a",
+                        "secondary-fixed": "#75ff69",
+                        "surface-container-high": "#e5e8eb",
+                        "tertiary": "#1a0b00",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#49fd48",
+                        "on-primary-fixed-variant": "#314865",
+                        "surface-container": "#ebeef1",
+                        "on-tertiary-fixed": "#2d1600",
+                        "primary-fixed": "#d2e4ff",
+                        "on-tertiary-fixed-variant": "#613f1c",
+                        "inverse-primary": "#b0c8eb",
+                        "on-surface": "#181c1e",
+                        "on-secondary-container": "#00710d",
+                        "outline": "#74777e",
+                        "on-primary-fixed": "#001c37",
+                        "on-surface-variant": "#43474d",
+                        "on-secondary-fixed": "#002201",
+                        "tertiary-fixed-dim": "#eebd90",
+                        "background": "#f7fafd",
+                        "outline-variant": "#c4c6ce",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#d7dadd",
+                        "surface-container-low": "#f1f4f7",
+                        "on-secondary-fixed-variant": "#005307",
+                        "secondary-fixed-dim": "#25e531"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "gutter": "24px",
+                        "unit": "8px",
+                        "margin-desktop": "40px",
+                        "container-max-width": "1200px",
+                        "stack-md": "16px",
+                        "margin-mobile": "16px",
+                        "safe-bottom": "env(safe-area-inset-bottom)"
+                    },
+                    "fontFamily": {
+                        "display": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            -webkit-tap-highlight-color: transparent;
+        }
+        .file-upload-area {
+            border: 1px dashed theme('colors.outline-variant');
+            transition: all 0.2s ease-in-out;
+        }
+        .file-upload-area:active {
+            background-color: theme('colors.surface-container-low');
+            border-color: theme('colors.primary');
+        }
+    </style>
+</head>
+<body class="text-on-background font-body-md antialiased pb-[env(safe-area-inset-bottom)]">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim docked full-width top-0 border-b border-surface-variant dark:border-outline-variant flat no shadows flex justify-between items-center w-full px-margin-mobile h-16 sticky z-40">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="text-headline-md-mobile font-headline-md text-primary dark:text-primary-fixed-dim font-bold tracking-tight">TaxGuard</span>
+</div>
+<div class="flex items-center">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot portrait of a user in a clean, brightly lit modern setting. The aesthetic is corporate and trustworthy, featuring soft studio lighting on a neutral white background. High resolution, sharp focus, capturing a confident yet approachable expression suitable for a financial application profile avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8rgeDCVXWO4XoXzWOBgtCA4KKg11yDE_8s3dcUe9fycj2qE5_mgCu3lgcDeZ0Ex6J_Rq3EBJXz7dlSZzIK797XKWsyHx-V7p-eyLLR6fG_iGYPJAvFOUb69j5HGw3Qh1qlyEzUlG1Zc9vBup-6diYb7V30I6sh6bMZVmXwhkWSixMjoIYR1k_IvkTHEUTK72wpzIYqee7nO2VwTnqPcN-2BbEapi0golppwqX_7PF_-KtQu3JbRuj"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="w-full px-margin-mobile pt-stack-md pb-24 flex flex-col gap-stack-lg max-w-container-max-width mx-auto">
+<!-- Header & Progress -->
+<div class="flex flex-col gap-stack-sm">
+<div class="flex justify-between items-end">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary">Data Import</h1>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Step 1 of 5</span>
+</div>
+<!-- Progress Stepper (Mobile simplified) -->
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden mt-2">
+<div class="h-full bg-primary w-1/5 rounded-full"></div>
+</div>
+<!-- Security Banner -->
+<div class="mt-4 flex items-center gap-2 p-3 bg-surface-container-low rounded-lg border border-surface-variant">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">lock</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">256-bit Encrypted connection. Your data is secure.</span>
+</div>
+</div>
+<!-- Cards Section -->
+<div class="flex flex-col gap-stack-md">
+<!-- Form 16 Card -->
+<div class="bg-surface-container-lowest border border-[#E3E8EE] rounded-xl p-[24px] flex flex-col gap-stack-md">
+<div class="flex flex-col gap-1">
+<h2 class="font-headline-md text-headline-md-mobile text-primary">Upload Form 16</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Import your salary details automatically from your employer's Form 16 PDF.</p>
+</div>
+<div class="file-upload-area rounded-lg p-6 flex flex-col items-center justify-center gap-3 cursor-pointer">
+<span class="material-symbols-outlined text-outline text-[40px] opacity-70">cloud_upload</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-center">Tap to select or take a photo</span>
+<button class="mt-2 bg-surface-container-lowest border border-primary-container text-primary-container font-label-md text-label-md px-6 py-2 rounded-lg transition-colors hover:bg-surface-container-low active:bg-surface-variant">
+                        Browse Files
+                    </button>
+</div>
+</div>
+<!-- AIS Card -->
+<div class="bg-surface-container-lowest border border-[#E3E8EE] rounded-xl p-[24px] flex flex-col gap-stack-md">
+<div class="flex flex-col gap-1">
+<h2 class="font-headline-md text-headline-md-mobile text-primary">Upload AIS</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Import Annual Information Statement for comprehensive income tracking.</p>
+</div>
+<div class="file-upload-area rounded-lg p-6 flex flex-col items-center justify-center gap-3 cursor-pointer">
+<span class="material-symbols-outlined text-outline text-[40px] opacity-70">description</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-center">Tap to select your AIS PDF</span>
+<button class="mt-2 bg-surface-container-lowest border border-primary-container text-primary-container font-label-md text-label-md px-6 py-2 rounded-lg transition-colors hover:bg-surface-container-low active:bg-surface-variant">
+                        Browse Files
+                    </button>
+</div>
+</div>
+</div>
+<!-- Action Buttons (Bottom of content, above nav) -->
+<div class="flex flex-col gap-stack-sm mt-4">
+<button class="w-full bg-primary-container text-on-primary font-label-md text-label-md py-4 rounded-lg flex items-center justify-center gap-2 active:opacity-80 transition-opacity">
+                Continue to Deductions
+                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+<button class="w-full bg-surface-container-lowest border border-primary-container text-primary-container font-label-md text-label-md py-4 rounded-lg flex items-center justify-center active:bg-surface-variant transition-colors">
+                Skip for now
+            </button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface dark:bg-surface-dim docked full-width bottom-0 z-50 border-t border-surface-variant dark:border-outline-variant flat no shadows fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-2 pb-[env(safe-area-inset-bottom)] md:hidden">
+<!-- Dashboard (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-3 py-1 hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+<span class="font-label-sm text-label-sm mt-1">Dashboard</span>
+</a>
+<!-- Returns (Active - Semantic Match for filing journey) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container dark:bg-primary-fixed-dim dark:text-on-primary-fixed rounded-xl px-3 py-1 scale-95 duration-200" href="#">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">description</span>
+<span class="font-label-sm text-label-sm mt-1 text-primary-fixed font-bold">Returns</span>
+</a>
+<!-- Security (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-3 py-1 hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">lock</span>
+<span class="font-label-sm text-label-sm mt-1">Security</span>
+</a>
+<!-- Help (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-3 py-1 hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">support_agent</span>
+<span class="font-label-sm text-label-sm mt-1">Help</span>
+</a>
+</nav>
+<!-- Invisible spacer for bottom nav -->
+<div class="h-20 w-full block md:hidden"></div>
+</body></html>

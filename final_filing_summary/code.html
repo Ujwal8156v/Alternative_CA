@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TaxEase India - Final Filing Summary</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-container": "#ae835a",
+                      "surface-variant": "#e0e3e6",
+                      "secondary-fixed-dim": "#25e531",
+                      "inverse-primary": "#b0c8eb",
+                      "on-surface-variant": "#43474d",
+                      "on-primary-fixed": "#001c37",
+                      "surface-bright": "#f7fafd",
+                      "primary-container": "#0a2540",
+                      "secondary-container": "#49fd48",
+                      "inverse-on-surface": "#eef1f4",
+                      "surface-container-highest": "#e0e3e6",
+                      "outline-variant": "#c4c6ce",
+                      "surface-tint": "#49607e",
+                      "inverse-surface": "#2d3133",
+                      "on-primary-fixed-variant": "#314865",
+                      "secondary-fixed": "#75ff69",
+                      "primary-fixed-dim": "#b0c8eb",
+                      "on-secondary-fixed": "#002201",
+                      "on-secondary-container": "#00710d",
+                      "on-tertiary-fixed-variant": "#613f1c",
+                      "surface-dim": "#d7dadd",
+                      "on-background": "#181c1e",
+                      "primary-fixed": "#d2e4ff",
+                      "primary": "#000f22",
+                      "surface-container-low": "#f1f4f7",
+                      "on-tertiary-fixed": "#2d1600",
+                      "outline": "#74777e",
+                      "on-surface": "#181c1e",
+                      "on-tertiary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "on-secondary": "#ffffff",
+                      "tertiary": "#1a0b00",
+                      "background": "#f7fafd",
+                      "tertiary-fixed": "#ffdcbe",
+                      "error-container": "#ffdad6",
+                      "on-primary": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-container": "#768dad",
+                      "error": "#ba1a1a",
+                      "tertiary-container": "#381d00",
+                      "surface-container-high": "#e5e8eb",
+                      "surface": "#f7fafd",
+                      "surface-container": "#ebeef1",
+                      "tertiary-fixed-dim": "#eebd90",
+                      "on-secondary-fixed-variant": "#005307",
+                      "secondary": "#006e0c",
+                      "on-error": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "stack-md": "16px",
+                      "container-max-width": "1200px",
+                      "stack-sm": "8px",
+                      "margin-mobile": "16px",
+                      "unit": "8px",
+                      "stack-lg": "32px",
+                      "margin-desktop": "40px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": ["Inter"],
+                      "display": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "label-md": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "body-sm": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-desktop h-16 bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">TaxEase India</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim hover:text-primary transition-colors cursor-pointer" data-icon="security">security</span>
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim hover:text-primary transition-colors cursor-pointer" data-icon="help_outline">help_outline</span>
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim hover:text-primary transition-colors cursor-pointer" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<div class="flex flex-1 pt-16">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-screen sticky top-0 p-stack-md w-64 bg-surface-container-low dark:bg-inverse-surface border-r border-outline-variant dark:border-outline">
+<div class="mb-stack-lg">
+<h2 class="font-headline-md text-headline-md font-bold text-primary">AY 2026-27</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-stack-sm">PAN: ABCDE1234F</p>
+</div>
+<ul class="flex-1 flex flex-col gap-unit">
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-label-md text-label-md">Sources of Income</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="Description">qr_code_2</span>
+<span class="font-label-md text-label-md">Deductions</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-md text-label-md">Taxes Paid</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-medium hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="calculate">calculate</span>
+<span class="font-label-md text-label-md">Tax Liability</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary-container text-on-primary-container font-bold rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+<span class="font-label-md text-label-md">Verify &amp; File</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto">
+<button class="w-full bg-primary-container text-on-primary-container py-2 rounded-lg font-label-md text-label-md font-bold mb-stack-md">Compare Regimes</button>
+<ul class="flex flex-col gap-unit border-t border-outline-variant pt-stack-md">
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="lock">lock</span>
+<span class="font-label-sm text-label-sm">Security Policy</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-sm text-label-sm">Portal Guide</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 p-margin-mobile md:p-margin-desktop max-w-[1200px] mx-auto bg-surface">
+<!-- Header Section -->
+<div class="mb-stack-lg flex flex-col md:flex-row md:justify-between md:items-end gap-stack-md">
+<div>
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-secondary-fixed/20 text-secondary border border-secondary/30 rounded-full font-label-sm text-label-sm mb-3">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+                        All inputs validated. Calculation deterministic and verified.
+                    </div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">Final Filing Summary &amp; Portal Guide</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">Your Filing Cheat Sheet for the ITR Portal.</p>
+</div>
+<button class="bg-primary-container text-on-primary-container font-label-md text-label-md px-6 py-3 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+                    Download Summary PDF
+                </button>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Left Column: Schedules (Bento 8 cols) -->
+<div class="md:col-span-8 flex flex-col gap-stack-lg">
+<!-- Schedule Salary Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-gutter shadow-sm">
+<div class="flex items-center justify-between mb-stack-md border-b border-outline-variant pb-stack-sm">
+<h3 class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="work">work</span>
+                                Schedule Salary
+                            </h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Validated</span>
+</div>
+<div class="grid grid-cols-2 gap-y-stack-md gap-x-gutter">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Gross Salary (17(1))</p>
+<p class="font-body-lg text-body-lg text-on-surface font-medium">₹ 14,50,000</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Allowances Exempt (u/s 10)</p>
+<p class="font-body-lg text-body-lg text-on-surface font-medium">₹ 1,20,000</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Standard Deduction (16(ia))</p>
+<p class="font-body-lg text-body-lg text-on-surface font-medium">₹ 50,000</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Professional Tax (16(iii))</p>
+<p class="font-body-lg text-body-lg text-on-surface font-medium">₹ 2,500</p>
+</div>
+<div class="col-span-2 pt-stack-sm border-t border-outline-variant/50 flex justify-between">
+<p class="font-label-md text-label-md text-on-surface">Income Chargeable under Salaries</p>
+<p class="font-headline-md text-headline-md text-primary font-bold">₹ 12,77,500</p>
+</div>
+</div>
+</div>
+<!-- Schedule HP Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-gutter shadow-sm">
+<div class="flex items-center justify-between mb-stack-md border-b border-outline-variant pb-stack-sm">
+<h3 class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="home">home</span>
+                                Schedule HP (House Property)
+                            </h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Validated</span>
+</div>
+<div class="grid grid-cols-2 gap-y-stack-md gap-x-gutter">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Gross Annual Value</p>
+<p class="font-body-lg text-body-lg text-on-surface font-medium">₹ 0 (Self-Occupied)</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Interest on Borrowed Capital</p>
+<p class="font-body-lg text-body-lg text-on-surface font-medium text-error">- ₹ 1,50,000</p>
+</div>
+<div class="col-span-2 pt-stack-sm border-t border-outline-variant/50 flex justify-between">
+<p class="font-label-md text-label-md text-on-surface">Income from House Property</p>
+<p class="font-headline-md text-headline-md text-error font-bold">- ₹ 1,50,000</p>
+</div>
+</div>
+</div>
+<!-- Schedule VI-A Deductions -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-gutter shadow-sm">
+<div class="flex items-center justify-between mb-stack-md border-b border-outline-variant pb-stack-sm">
+<h3 class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="request_quote">request_quote</span>
+                                Schedule VI-A (Deductions)
+                            </h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Validated</span>
+</div>
+<div class="grid grid-cols-2 gap-y-stack-md gap-x-gutter">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">80C (EPF, LIC, PPF)</p>
+<p class="font-body-lg text-body-lg text-on-surface font-medium">₹ 1,50,000</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">80D (Health Insurance)</p>
+<p class="font-body-lg text-body-lg text-on-surface font-medium">₹ 25,000</p>
+</div>
+<div class="col-span-2 pt-stack-sm border-t border-outline-variant/50 flex justify-between">
+<p class="font-label-md text-label-md text-on-surface">Total Deductions under Chapter VI-A</p>
+<p class="font-headline-md text-headline-md text-secondary font-bold">₹ 1,75,000</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Instructions (Bento 4 cols) -->
+<div class="md:col-span-4 flex flex-col gap-stack-lg">
+<!-- Step-by-Step Guide -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-gutter h-full">
+<h3 class="font-headline-md text-headline-md text-primary mb-stack-md flex items-center gap-2 border-b border-outline-variant pb-stack-sm">
+<span class="material-symbols-outlined text-primary-container" data-icon="route">route</span>
+                            Portal Filing Guide
+                        </h3>
+<div class="relative pl-6 border-l-2 border-outline-variant/30 space-y-stack-lg mt-stack-md">
+<!-- Step 1 -->
+<div class="relative">
+<div class="absolute -left-[35px] bg-primary-container text-on-primary-container w-6 h-6 rounded-full flex items-center justify-center font-label-sm text-label-sm font-bold border-4 border-surface-container-low">1</div>
+<h4 class="font-label-md text-label-md text-on-surface mb-1">Login to Portal</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Go to eportal.incometax.gov.in and login with PAN ABCDE1234F.</p>
+<a class="text-primary-container text-body-sm font-medium hover:underline inline-flex items-center gap-1 mt-2" href="#">Open Portal <span class="material-symbols-outlined text-[14px]">open_in_new</span></a>
+</div>
+<!-- Step 2 -->
+<div class="relative">
+<div class="absolute -left-[35px] bg-primary-container text-on-primary-container w-6 h-6 rounded-full flex items-center justify-center font-label-sm text-label-sm font-bold border-4 border-surface-container-low">2</div>
+<h4 class="font-label-md text-label-md text-on-surface mb-1">Select Form</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Choose <strong>ITR-1 (Sahaj)</strong> for AY 2026-27. Select "File Online".</p>
+</div>
+<!-- Step 3 -->
+<div class="relative">
+<div class="absolute -left-[35px] bg-primary-container text-on-primary-container w-6 h-6 rounded-full flex items-center justify-center font-label-sm text-label-sm font-bold border-4 border-surface-container-low">3</div>
+<h4 class="font-label-md text-label-md text-on-surface mb-1">Enter Schedule Values</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Navigate to each schedule and enter the exact values shown on the left panel.</p>
+</div>
+<!-- Step 4 -->
+<div class="relative">
+<div class="absolute -left-[35px] bg-primary-container text-on-primary-container w-6 h-6 rounded-full flex items-center justify-center font-label-sm text-label-sm font-bold border-4 border-surface-container-low">4</div>
+<h4 class="font-label-md text-label-md text-on-surface mb-1">Verify Taxes Paid</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Ensure pre-filled TDS matches Form 26AS. Pay any outstanding self-assessment tax.</p>
+</div>
+<!-- Step 5 -->
+<div class="relative">
+<div class="absolute -left-[35px] bg-surface-variant text-on-surface-variant w-6 h-6 rounded-full flex items-center justify-center font-label-sm text-label-sm font-bold border-4 border-surface-container-low">5</div>
+<h4 class="font-label-md text-label-md text-on-surface mb-1">e-Verify</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Submit the return and e-verify using Aadhaar OTP within 30 days.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full py-stack-md px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-stack-md bg-surface-container-lowest dark:bg-inverse-surface border-t border-outline-variant dark:border-outline mt-auto">
+<div class="font-label-md text-label-md font-bold text-on-surface">© 2025 TaxEase India. Secure 256-bit Encrypted.</div>
+<ul class="flex items-center gap-6">
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">FAQ</a></li>
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Portal Guide</a></li>
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Security Policy</a></li>
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors opacity-80 hover:opacity-100" href="#">Privacy Terms</a></li>
+</ul>
+</footer>
+</body></html>

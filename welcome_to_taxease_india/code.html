@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TaxEase India - Simplify Your Tax Filing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#ae835a",
+                        "surface-variant": "#e0e3e6",
+                        "secondary-fixed-dim": "#25e531",
+                        "inverse-primary": "#b0c8eb",
+                        "on-surface-variant": "#43474d",
+                        "on-primary-fixed": "#001c37",
+                        "surface-bright": "#f7fafd",
+                        "primary-container": "#0a2540",
+                        "secondary-container": "#49fd48",
+                        "inverse-on-surface": "#eef1f4",
+                        "surface-container-highest": "#e0e3e6",
+                        "outline-variant": "#c4c6ce",
+                        "surface-tint": "#49607e",
+                        "inverse-surface": "#2d3133",
+                        "on-primary-fixed-variant": "#314865",
+                        "secondary-fixed": "#75ff69",
+                        "primary-fixed-dim": "#b0c8eb",
+                        "on-secondary-fixed": "#002201",
+                        "on-secondary-container": "#00710d",
+                        "on-tertiary-fixed-variant": "#613f1c",
+                        "surface-dim": "#d7dadd",
+                        "on-background": "#181c1e",
+                        "primary-fixed": "#d2e4ff",
+                        "primary": "#000f22",
+                        "surface-container-low": "#f1f4f7",
+                        "on-tertiary-fixed": "#2d1600",
+                        "outline": "#74777e",
+                        "on-surface": "#181c1e",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#1a0b00",
+                        "background": "#f7fafd",
+                        "tertiary-fixed": "#ffdcbe",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#768dad",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#381d00",
+                        "surface-container-high": "#e5e8eb",
+                        "surface": "#f7fafd",
+                        "surface-container": "#ebeef1",
+                        "tertiary-fixed-dim": "#eebd90",
+                        "on-secondary-fixed-variant": "#005307",
+                        "secondary": "#006e0c",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "stack-md": "16px",
+                        "container-max-width": "1200px",
+                        "stack-sm": "8px",
+                        "margin-mobile": "16px",
+                        "unit": "8px",
+                        "stack-lg": "32px",
+                        "margin-desktop": "40px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Inter"],
+                        "display": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "label-md": ["14px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-full flex flex-col">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-desktop h-16 bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">TaxEase India</span>
+</div>
+<div class="hidden md:flex items-center gap-stack-md text-on-surface-variant font-medium">
+<a class="text-primary font-bold border-b-2 border-primary pb-1" href="#">Welcome</a>
+<a class="hover:text-primary transition-colors" href="#">Pricing</a>
+<a class="hover:text-primary transition-colors" href="#">Resources</a>
+<a class="hover:text-primary transition-colors" href="#">Contact</a>
+</div>
+<div class="flex items-center gap-stack-md">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim cursor-pointer hover:opacity-80 transition-opacity" data-icon="security">security</span>
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim cursor-pointer hover:opacity-80 transition-opacity" data-icon="help_outline">help_outline</span>
+<button class="bg-primary-container text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg hover:opacity-90 transition-opacity">Login</button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-[80px] pb-stack-lg px-margin-mobile md:px-margin-desktop flex flex-col items-center max-w-container-max-width mx-auto w-full">
+<!-- Hero Section -->
+<section class="w-full text-center py-16 md:py-24 flex flex-col items-center">
+<div class="inline-flex items-center gap-2 bg-surface-container-high px-4 py-2 rounded-full mb-6 border border-outline-variant">
+<span class="material-symbols-outlined text-primary-container text-sm" style="font-variation-settings: 'FILL' 1;">shield_locked</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">AY 2026-27 Ready</span>
+</div>
+<h1 class="font-display text-display text-primary-container mb-6 max-w-3xl">
+                Tax Filing,<br class="hidden md:block"/> Simplified &amp; Secure.
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-10">
+                Navigate your taxes with confidence. TaxEase India combines institutional-grade security with intuitive design to make filing fast, accurate, and completely private.
+            </p>
+<div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
+<button class="bg-primary-container text-on-primary font-label-md text-label-md px-8 py-4 rounded-lg shadow-[0px_4px_12px_rgba(10,37,64,0.15)] hover:bg-[#123050] transition-colors flex items-center justify-center gap-2 w-full sm:w-auto">
+                    Start Filing
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+<button class="bg-surface text-primary-container border border-primary-container font-label-md text-label-md px-8 py-4 rounded-lg hover:bg-surface-variant transition-colors flex items-center justify-center gap-2 w-full sm:w-auto">
+                    Try with Demo Data
+                    <span class="material-symbols-outlined text-sm">science</span>
+</button>
+</div>
+<div class="mt-8 flex items-center justify-center gap-2 text-on-surface-variant opacity-80">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">lock</span>
+<span class="font-label-sm text-label-sm">256-bit Encrypted. Your data stays strictly on your device.</span>
+</div>
+</section>
+<!-- Features Bento Grid -->
+<section class="w-full mt-10 mb-20 grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Feature 1: Privacy -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-8 flex flex-col items-start shadow-sm hover:shadow-[0px_4px_12px_rgba(10,37,64,0.05)] transition-shadow">
+<div class="bg-primary-fixed p-3 rounded-lg mb-6">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">privacy_tip</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary-container mb-3">Privacy-First Engine</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex-grow">
+                    All tax calculations are performed locally on your device. Your sensitive financial data never leaves your browser until you are ready to file directly with the ITD.
+                </p>
+</div>
+<!-- Feature 2: Automation -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-8 flex flex-col items-start shadow-sm hover:shadow-[0px_4px_12px_rgba(10,37,64,0.05)] transition-shadow">
+<div class="bg-[#dcfce7] p-3 rounded-lg mb-6">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">autorenew</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary-container mb-3">AIS &amp; Form 16 Sync</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex-grow">
+                    Instantly import and reconcile your Annual Information Statement and Form 16. Eliminate manual entry errors and ensure total compliance with a single click.
+                </p>
+</div>
+<!-- Feature 3: Comparison -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-8 flex flex-col items-start shadow-sm hover:shadow-[0px_4px_12px_rgba(10,37,64,0.05)] transition-shadow">
+<div class="bg-[#fef9c3] p-3 rounded-lg mb-6">
+<span class="material-symbols-outlined text-[#854d0e]" style="font-variation-settings: 'FILL' 1;">query_stats</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary-container mb-3">Regime Comparison</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant flex-grow">
+                    Our dynamic dashboard visualizes your tax liability side-by-side. Instantly see whether the Old or New tax regime saves you more money based on your specific deductions.
+                </p>
+</div>
+</section>
+</main>
+<!-- Footer Component -->
+<footer class="w-full py-stack-md px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-stack-md bg-surface-container-lowest dark:bg-inverse-surface border-t border-outline-variant dark:border-outline mt-auto">
+<div class="font-label-sm text-label-sm text-on-surface-variant">
+            © 2025 TaxEase India. Secure 256-bit Encrypted.
+        </div>
+<div class="flex flex-wrap gap-stack-md justify-center">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">FAQ</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Portal Guide</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Security Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Privacy Terms</a>
+</div>
+</footer>
+</body></html>
