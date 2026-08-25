@@ -65,5 +65,15 @@ Open [http://localhost:8080](http://localhost:8080) in your browser.
 
 ---
 
+## 👤 Author
+- **Ujwal Kumar Behera** ([@Ujwal8156v](https://github.com/Ujwal8156v))
+
+---
+
 ## ⚖️ License
 Distributed under the LGPL / Open Source License. See [LICENSE](LICENSE) for more details.
+
+---
+
+© 2026 Alternative_CA
+
