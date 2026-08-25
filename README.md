@@ -2,7 +2,12 @@
 
 > **TaxEase India is a privacy-first, intelligent tax filing assistant & calculator for AY 2026-27 (FY 2025-26). It parses Form 16 & AIS, provides instant Old vs New regime comparison, optimizes deductions (80C, 80D, HRA, NPS), reconciles TDS, and generates ready-to-file ITR-1/ITR-2 schedule summaries with complete data security.**
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-2ea44f?style=for-the-badge&logo=github)](https://ujwal8156v.github.io/Alternative_CA/)
+[![License: LGPL](https://img.shields.io/badge/License-LGPL-blue.svg?style=for-the-badge)](LICENSE)
+
 ![TaxEase India](logo.png)
+
+🌐 **Live Application URL:** [https://ujwal8156v.github.io/Alternative_CA/](https://ujwal8156v.github.io/Alternative_CA/)
 
 TaxEase India is a client-side tax computation engine and filing assistant that acts as a digital Chartered Accountant (CA) alternative. It helps salaried individuals, freelancers, and investors optimize deductions, compare Old vs New tax regimes in real time, parse Form 16 / AIS documents, and generate audit-ready ITR-1/ITR-2 schedule summaries.
 
